@@ -47,10 +47,15 @@ export async function apiFetch<T>(path: string, options: RequestInit = {}): Prom
 
   if (!response.ok) {
     let details: unknown;
+    const clonedRes = response.clone();
     try {
       details = await response.json();
     } catch {
-      details = await response.text();
+      try {
+        details = await clonedRes.text();
+      } catch {
+        details = "Could not parse response body";
+      }
     }
     const message =
       (details as { message?: string; detail?: string })?.message ||
