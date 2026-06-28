@@ -26,7 +26,6 @@ import {
 import { useAuthAvailability } from "@/contexts/AuthContext";
 import { useTheme } from "@/contexts/ThemeContext";
 import { cn } from "@/lib/utils";
-import { getSavedCompanies } from "@/services/userService";
 import { getReports } from "@/services/reportService";
 
 const navItems = [
