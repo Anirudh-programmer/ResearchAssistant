@@ -6,7 +6,6 @@ import {
   LogOut,
   Moon,
   Search,
-  Settings,
   Stamp,
   Sun,
 } from "lucide-react";
@@ -33,7 +32,6 @@ const navItems = [
   { to: "/research", label: "New research", icon: Search },
   { to: "/history", label: "History", icon: History },
   { to: "/saved", label: "Saved companies", icon: Bookmark },
-  { to: "/account", label: "Account", icon: Settings },
 ];
 
 function ClerkUserBadge() {

@@ -27,13 +27,6 @@ const configSchema = z.object({
   FINNHUB_API_KEY: z.string().optional(),
   SECRET_KEY: z.string().default('change-me-to-a-random-string'),
   MOCK_LLM: z.preprocess((val) => val === 'true' || val === '1', z.boolean()).default(false),
-  SMTP_HOST: z.string().optional(),
-  SMTP_PORT: z.coerce.number().optional(),
-  SMTP_USER: z.string().optional(),
-  SMTP_PASS: z.string().optional(),
-  SMTP_FROM: z.string().optional(),
-  VERCEL_MAILER_URL: z.string().optional(),
-  MAILER_SECRET: z.string().optional(),
 });
 
 const parsed = configSchema.safeParse(process.env);

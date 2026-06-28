@@ -14,7 +14,6 @@ const ReportDetailPage = lazy(() =>
 const SavedCompaniesPage = lazy(() =>
   import("@/pages/SavedCompaniesPage").then((m) => ({ default: m.SavedCompaniesPage })),
 );
-const AccountPage = lazy(() => import("@/pages/AccountPage").then((m) => ({ default: m.AccountPage })));
 const SignInPage = lazy(() => import("@/pages/SignInPage").then((m) => ({ default: m.SignInPage })));
 const SignUpPage = lazy(() => import("@/pages/SignUpPage").then((m) => ({ default: m.SignUpPage })));
 const NotFoundPage = lazy(() => import("@/pages/NotFoundPage").then((m) => ({ default: m.NotFoundPage })));
@@ -47,7 +46,6 @@ export function App() {
           <Route path="/history" element={<HistoryPage />} />
           <Route path="/report/:reportId" element={<ReportDetailPage />} />
           <Route path="/saved" element={<SavedCompaniesPage />} />
-          <Route path="/account" element={<AccountPage />} />
         </Route>
 
         <Route path="*" element={<NotFoundPage />} />

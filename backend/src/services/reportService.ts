@@ -145,72 +145,7 @@ function getEmailHtmlTemplate(report: any, user: any) {
 }
 
 export async function sendReportEmail(report: any, userId: string) {
-  try {
-    const userSettings = await prisma.userSettings.findUnique({
-      where: { userId },
-    });
-    if (userSettings?.emailNotifications) {
-      const user = await prisma.user.findUnique({ where: { id: userId } });
-      if (user && user.email) {
-        const subject = `Verdict Ready: ${report.companyName} (${report.ticker || 'N/A'})`;
-        const text = `Hi ${user.fullName || 'User'},\n\nYour AI investment analysis for ${report.companyName} is complete.\n\nVerdict: ${report.verdict}\nScore: ${report.investmentScore}/100\nConfidence Score: ${report.confidenceScore}/100\n\nRead the full report at: ${config.FRONTEND_ORIGIN || 'http://localhost:5173'}/report/${report.id}\n\nBest regards,\nVerdict AI Team`;
-        const html = getEmailHtmlTemplate(report, user);
-
-        if (config.VERCEL_MAILER_URL && config.MAILER_SECRET) {
-          // Send via Vercel serverless function
-          const response = await fetch(config.VERCEL_MAILER_URL, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              to: user.email,
-              subject,
-              text,
-              html,
-              secret: config.MAILER_SECRET,
-            }),
-          });
-
-          if (!response.ok) {
-            const errText = await response.text();
-            throw new Error(`Vercel mailer failed with status ${response.status}: ${errText}`);
-          }
-          console.log(`📧 [VERCEL EMAIL SENT] Real HTML email sent via Vercel to ${user.email} for ${report.companyName}`);
-        } else if (config.SMTP_HOST && config.SMTP_USER && config.SMTP_PASS) {
-          // Fall back to direct SMTP
-          const transporter = nodemailer.createTransport({
-            host: config.SMTP_HOST,
-            port: config.SMTP_PORT || 587,
-            secure: config.SMTP_PORT === 465,
-            auth: {
-              user: config.SMTP_USER,
-              pass: config.SMTP_PASS,
-            },
-          });
-
-          const mailOptions = {
-            from: config.SMTP_FROM || config.SMTP_USER,
-            to: user.email,
-            subject,
-            text,
-            html,
-          };
-
-          await transporter.sendMail(mailOptions);
-          console.log(`📧 [SMTP EMAIL SENT] Real HTML email sent via SMTP to ${user.email} for ${report.companyName}`);
-        } else {
-          console.log(`\n============================================================`);
-          console.log(`📧 [EMAIL NOTIFICATION SIMULATION] SMTP / Vercel Mailer not configured. Details:`);
-          console.log(`To: ${user.email}`);
-          console.log(`Subject: ${subject}`);
-          console.log(`============================================================\n`);
-        }
-      }
-    }
-  } catch (emailErr) {
-    console.error('Error sending email notification:', emailErr);
-  }
+  // Email feature has been removed
 }
 
 
