@@ -4,6 +4,7 @@ import { createContext, useContext, useEffect } from "react";
 import { registerAuthTokenGetter } from "@/services/api";
 
 const CLERK_PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY as string | undefined;
+console.log("DEBUG: CLERK_PUBLISHABLE_KEY in AuthContext =", CLERK_PUBLISHABLE_KEY);
 
 interface AuthAvailability {
   /** Whether Clerk is actually configured in this build. If false, the app
