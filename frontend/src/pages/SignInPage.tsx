@@ -5,8 +5,7 @@ import { useEffect } from "react";
 
 import { useAuthAvailability } from "@/contexts/AuthContext";
 
-export function SignInPage() {
-  const { clerkConfigured } = useAuthAvailability();
+function ClerkSignInPage() {
   const { signOut } = useClerk();
   const { isSignedIn } = useAuth();
   const navigate = useNavigate();
@@ -18,10 +17,6 @@ export function SignInPage() {
       });
     }
   }, [isSignedIn, signOut, navigate]);
-
-  if (!clerkConfigured) {
-    return <Navigate to="/research" replace />;
-  }
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center gap-8 bg-canvas px-4">
@@ -43,4 +38,14 @@ export function SignInPage() {
       />
     </div>
   );
+}
+
+export function SignInPage() {
+  const { clerkConfigured } = useAuthAvailability();
+
+  if (!clerkConfigured) {
+    return <Navigate to="/research" replace />;
+  }
+
+  return <ClerkSignInPage />;
 }
