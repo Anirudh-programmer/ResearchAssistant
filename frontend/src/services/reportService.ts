@@ -78,29 +78,46 @@ export async function streamAnalysis(
   const decoder = new TextDecoder();
   let buffer = "";
 
+  const processRawEvent = (rawEvent: string) => {
+    const lines = rawEvent.split("\n");
+    const eventLine = lines.find((l) => l.startsWith("event:"));
+    const dataLine = lines.find((l) => l.startsWith("data:"));
+    if (!eventLine || !dataLine) return;
+
+    const eventType = eventLine.replace("event:", "").trim();
+    const data = JSON.parse(dataLine.replace("data:", "").trim());
+
+    if (eventType === "step_complete") {
+      onEvent({ type: "step_complete", step: data });
+    } else if (eventType === "report") {
+      onEvent({ type: "report", report: data.report ?? data });
+    } else if (eventType === "error") {
+      onEvent({ type: "error", message: data.message });
+    }
+  };
+
   while (true) {
     const { done, value } = await reader.read();
-    if (done) break;
+    
+    if (value) {
+      buffer += decoder.decode(value, { stream: true });
+    }
 
-    buffer += decoder.decode(value, { stream: true });
+    if (done) {
+      buffer += decoder.decode();
+      const finalEvents = buffer.split("\n\n").filter((e) => e.trim());
+      for (const rawEvent of finalEvents) {
+        processRawEvent(rawEvent);
+      }
+      break;
+    }
+
     const events = buffer.split("\n\n");
     buffer = events.pop() || "";
 
     for (const rawEvent of events) {
-      const lines = rawEvent.split("\n");
-      const eventLine = lines.find((l) => l.startsWith("event:"));
-      const dataLine = lines.find((l) => l.startsWith("data:"));
-      if (!eventLine || !dataLine) continue;
-
-      const eventType = eventLine.replace("event:", "").trim();
-      const data = JSON.parse(dataLine.replace("data:", "").trim());
-
-      if (eventType === "step_complete") {
-        onEvent({ type: "step_complete", step: data });
-      } else if (eventType === "report") {
-        onEvent({ type: "report", report: data.report ?? data });
-      } else if (eventType === "error") {
-        onEvent({ type: "error", message: data.message });
+      if (rawEvent.trim()) {
+        processRawEvent(rawEvent);
       }
     }
   }
