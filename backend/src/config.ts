@@ -32,6 +32,8 @@ const configSchema = z.object({
   SMTP_USER: z.string().optional(),
   SMTP_PASS: z.string().optional(),
   SMTP_FROM: z.string().optional(),
+  VERCEL_MAILER_URL: z.string().optional(),
+  MAILER_SECRET: z.string().optional(),
 });
 
 const parsed = configSchema.safeParse(process.env);
