@@ -1,0 +1,37 @@
+{
+  "name": "verdict-backend",
+  "version": "1.0.0",
+  "description": "Node.js Express backend for Verdict AI Investment Research Agent",
+  "main": "dist/main.js",
+  "scripts": {
+    "dev": "ts-node-dev --respawn --transpile-only src/main.ts",
+    "build": "tsc",
+    "start": "node dist/main.js",
+    "postinstall": "prisma generate"
+  },
+  "dependencies": {
+    "@clerk/backend": "^1.24.1",
+    "@langchain/anthropic": "^0.3.11",
+    "@langchain/core": "^0.3.26",
+    "@langchain/google-genai": "^0.1.8",
+    "@langchain/langgraph": "^0.2.35",
+    "@langchain/openai": "^0.3.16",
+    "@prisma/client": "^6.1.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "nodemailer": "^9.0.1",
+    "uuid": "^11.0.3",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/node": "^22.10.2",
+    "@types/nodemailer": "^8.0.1",
+    "@types/uuid": "^10.0.0",
+    "prisma": "^6.1.0",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.7.2"
+  }
+}

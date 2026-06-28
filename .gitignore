@@ -1,0 +1,36 @@
+# Node
+node_modules/
+**/node_modules/
+dist/
+**/dist/
+
+# Env files
+.env
+*.env
+**/.env
+**/*.env
+
+# Local Git Tooling
+mingit/
+mingit.zip
+
+# Python remnants
+.venv/
+__pycache__/
+*.pyc
+
+# Logs
+*.log
+logs/
+
+# Databases
+dev.db
+*.db
+*.db-journal
+
+# OS / Editor
+.DS_Store
+.vscode/
+.idea/
+.gemini/
+

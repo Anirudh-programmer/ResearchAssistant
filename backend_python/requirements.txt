@@ -1,0 +1,44 @@
+# --- Web framework ---
+fastapi==0.115.0
+uvicorn[standard]==0.32.0
+
+# --- Settings / validation ---
+pydantic==2.9.2
+pydantic-settings==2.6.0
+email-validator==2.2.0
+
+# --- Database ---
+sqlalchemy[asyncio]==2.0.36
+alembic==1.14.0
+asyncpg==0.30.0          # Neon Postgres (production)
+aiosqlite==0.20.0        # SQLite (local dev fallback, same models)
+greenlet==3.1.1
+
+# --- Auth (Clerk) ---
+httpx==0.28.1            # used to fetch Clerk JWKS + verify tokens; also required >=0.28.1 by google-genai
+pyjwt[crypto]==2.10.1
+
+# --- LLM providers ---
+google-genai==1.3.0          # Gemini (current SDK; google-generativeai is deprecated/EOL)
+openai==1.54.4
+anthropic==0.39.0
+
+# --- Agent orchestration ---
+langgraph==0.2.45
+langchain==0.3.7
+langchain-core==0.3.15
+
+# --- Research tools ---
+tavily-python==0.5.0
+finnhub-python==2.4.20
+wikipedia==1.4.0
+
+# --- Utilities ---
+python-dotenv==1.0.1
+tenacity==9.0.0           # retries for flaky external APIs
+orjson==3.10.11
+
+# --- Dev / test ---
+pytest==8.3.3
+pytest-asyncio==0.24.0
+ruff==0.7.4

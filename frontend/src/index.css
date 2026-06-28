@@ -1,0 +1,145 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+/* ============================================================
+   DESIGN TOKENS
+   Direction: an AI-powered investment research terminal —
+   Bloomberg-terminal density and seriousness, with the verdict
+   (INVEST / PASS) treated as a stamped, decisive mark rather than
+   a soft chip. Two narrow accent colors (emerald / rust) are
+   reserved ONLY for verdicts; everything else is near-monochrome
+   so the verdict stamp is the one loud thing on any screen.
+   ============================================================ */
+@theme {
+  --font-sans: "Inter", "Inter Placeholder", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", "IBM Plex Mono Placeholder", ui-monospace, monospace;
+  --font-display: "Fraunces", "Fraunces Placeholder", Georgia, serif;
+
+  /* Base surfaces — near-black, not pure black, with a faint warmth */
+  --color-canvas: #0a0b0d;
+  --color-surface: #14161a;
+  --color-surface-raised: #1b1e23;
+  --color-border: #2a2d33;
+  --color-border-strong: #3a3e46;
+
+  /* Text */
+  --color-ink: #f0f0ec;
+  --color-ink-muted: #9a9da5;
+  --color-ink-faint: #5d6168;
+
+  /* Single cold-steel utility accent — links, focus rings, progress, charts */
+  --color-accent: #4f7a9e;
+  --color-accent-soft: #2c3f4d;
+
+  /* Verdict colors — reserved exclusively for INVEST / PASS stamps and their glow */
+  --color-invest: #1b7a5c;
+  --color-invest-soft: #143d31;
+  --color-pass: #a8432f;
+  --color-pass-soft: #3d2620;
+
+  /* Data-positive / data-negative (price moves, signal lists) — distinct from verdict colors */
+  --color-positive: #4ade80;
+  --color-negative: #f87171;
+
+  --radius-card: 0.625rem;
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  html {
+    color-scheme: dark;
+  }
+
+  /* Light mode override — same token names, inverted/lightened values.
+     Toggled via the .light-mode class on <html>, set by ThemeContext. */
+  html.light-mode {
+    color-scheme: light;
+    --color-canvas: #f7f6f2;
+    --color-surface: #ffffff;
+    --color-surface-raised: #efeee8;
+    --color-border: #e2e0d8;
+    --color-border-strong: #cbc9bf;
+
+    --color-ink: #15161a;
+    --color-ink-muted: #5b5d63;
+    --color-ink-faint: #93958f;
+
+    --color-accent: #2c5878;
+    --color-accent-soft: #e2ecf2;
+
+    --color-invest: #146349;
+    --color-invest-soft: #dcf0e7;
+    --color-pass: #8a3522;
+    --color-pass-soft: #f6e2dc;
+
+    --color-positive: #16803c;
+    --color-negative: #c4302b;
+  }
+
+  body {
+    background-color: var(--color-canvas);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-feature-settings: "ss01" 1;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection {
+    background-color: var(--color-accent-soft);
+    color: var(--color-ink);
+  }
+
+  /* Visible keyboard focus everywhere — never suppressed */
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer components {
+  /* Ledger-row hairline pattern used across data tables and report sections */
+  .ledger-row {
+    border-bottom: 1px solid var(--color-border);
+  }
+  .ledger-row:last-child {
+    border-bottom: none;
+  }
+
+  /* Monospace numeral treatment for tickers, scores, prices */
+  .data-figure {
+    font-family: var(--font-mono);
+    font-feature-settings: "tnum" 1;
+    letter-spacing: -0.01em;
+  }
+}
+
+/* Thin custom scrollbar to match the terminal feel */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-border-strong);
+  border-radius: 5px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-ink-faint);
+}

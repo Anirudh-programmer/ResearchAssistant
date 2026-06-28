@@ -1,0 +1,99 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum ReportStatus {
+  pending
+  running
+  completed
+  failed
+}
+
+enum Verdict {
+  INVEST
+  PASS
+}
+
+model User {
+  id             String        @id @default(uuid())
+  clerkUserId    String        @unique @map("clerk_user_id")
+  email          String        @unique
+  fullName       String?       @map("full_name")
+  avatarUrl      String?       @map("avatar_url")
+  createdAt      DateTime      @default(now()) @map("created_at")
+  updatedAt      DateTime      @updatedAt @map("updated_at")
+  reports        Report[]
+  savedCompanies SavedCompany[]
+  apiLogs        ApiLog[]
+  settings       UserSettings?
+
+  @@map("users")
+}
+
+model Report {
+  id               String       @id @default(uuid())
+  userId           String       @map("user_id")
+  companyName      String       @map("company_name")
+  ticker           String?
+  status           ReportStatus @default(pending)
+  verdict          Verdict?
+  investmentScore  Int?         @map("investment_score")
+  confidenceScore  Int?         @map("confidence_score")
+  reportData       Json?        @map("report_data")
+  errorMessage     String?      @map("error_message")
+  llmProviderUsed  String?      @map("llm_provider_used")
+  isFavorite       Boolean      @default(false) @map("is_favorite")
+  createdAt        DateTime     @default(now()) @map("created_at")
+  completedAt      DateTime?    @map("completed_at")
+  user             User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([companyName])
+  @@map("reports")
+}
+
+model SavedCompany {
+  id          String   @id @default(uuid())
+  userId      String   @map("user_id")
+  companyName String   @map("company_name")
+  ticker      String?
+  notes       String?
+  createdAt   DateTime @default(now()) @map("created_at")
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("saved_companies")
+}
+
+model ApiLog {
+  id           String   @id @default(uuid())
+  userId       String   @map("user_id")
+  reportId     String?  @map("report_id")
+  provider     String
+  endpoint     String
+  success      Boolean  @default(true)
+  latencyMs    Int?     @map("latency_ms")
+  errorMessage String?  @map("error_message")
+  createdAt    DateTime @default(now()) @map("created_at")
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("api_logs")
+}
+
+model UserSettings {
+  id                    String   @id @default(uuid())
+  userId                String   @unique @map("user_id")
+  theme                 String   @default("dark")
+  preferredLlmProvider  String?  @map("preferred_llm_provider")
+  emailNotifications    Boolean  @default(true) @map("email_notifications")
+  updatedAt             DateTime @updatedAt @map("updated_at")
+  user                  User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("user_settings")
+}
