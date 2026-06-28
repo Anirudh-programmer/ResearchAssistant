@@ -34,3 +34,7 @@ dev.db
 .idea/
 .gemini/
 
+# Submissions
+submission.zip
+*.zip
+
